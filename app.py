@@ -8,6 +8,7 @@ FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
 PLANT_APP_URL = "https://pas-plant-matching.streamlit.app/"
 
 BASE = Path(__file__).parent
+
 logo = Image.open(BASE / "PAS_Logo.png")
 
 st.set_page_config(
@@ -21,7 +22,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 48%, #f1f3f6 100%);
+        background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 45%, #f1f3f6 100%);
         color: #07111f;
     }
 
@@ -51,6 +52,7 @@ st.markdown(
     h2 {
         font-size: 29px !important;
         font-weight: 900 !important;
+        margin-bottom: 1.2rem !important;
     }
 
     .yellow-rule {
@@ -75,14 +77,21 @@ st.markdown(
     .card-text {
         color: #1f2937 !important;
         font-size: 18px;
-        line-height: 1.5;
+        line-height: 1.55;
+        min-height: 88px;
+        margin-bottom: 38px;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255,255,255,0.94);
+        background: rgba(255,255,255,0.96);
         border: 1px solid #d9dee8;
+        border-left: 6px solid #ffd400;
         border-radius: 18px;
         box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+    }
+
+    .status-box div[data-testid="stVerticalBlockBorderWrapper"] {
+        border-left: 1px solid #d9dee8;
     }
 
     .stLinkButton a {
@@ -104,15 +113,17 @@ st.markdown(
     }
 
     .version-pill {
-        display: inline-block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: 1px solid #d7dde6;
         border-radius: 10px;
         background: white;
         color: #1f2937 !important;
-        padding: 12px 18px;
+        height: 64px;
         font-size: 16px;
-        margin-top: 11px;
         text-align: center;
+        box-sizing: border-box;
     }
 
     .footer-line {
@@ -126,6 +137,26 @@ st.markdown(
 
     [data-testid="stImage"] img {
         border-radius: 18px;
+        object-fit: cover;
+    }
+
+    .photo-spacer {
+        height: 8px;
+    }
+
+    @media (max-width: 1050px) {
+        .block-container {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        h1 {
+            font-size: 40px !important;
+        }
+
+        .muted {
+            font-size: 18px;
+        }
     }
     </style>
     """,
@@ -145,10 +176,12 @@ with hero_left:
         st.markdown('<div class="yellow-rule"></div>', unsafe_allow_html=True)
 
 with hero_right:
+    st.markdown('<div class="status-box">', unsafe_allow_html=True)
     with st.container(border=True):
         st.markdown("### System Status")
         st.markdown('<div class="status-text">●&nbsp;&nbsp;All Systems Operational</div>', unsafe_allow_html=True)
         st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y %H:%M')}")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.write("")
 st.write("")
@@ -158,17 +191,16 @@ fuel_card, plant_card = st.columns(2, gap="large", vertical_alignment="top")
 
 with fuel_card:
     with st.container(border=True):
-        inner_icon, inner_text = st.columns([1.25, 2.7], vertical_alignment="center")
-        with inner_icon:
-            st.image(BASE / "fuel_icon.png", width=180)
-        with inner_text:
+        image_col, text_col = st.columns([1.35, 1.85], vertical_alignment="center")
+        with image_col:
+            st.image(BASE / "fuel_image.jpeg", width=260)
+        with text_col:
             st.markdown("## Fuel Invoice Checker")
             st.markdown(
                 '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
                 unsafe_allow_html=True,
             )
-            st.write("")
-            button_col, version_col = st.columns([2.2, 1], vertical_alignment="center")
+            button_col, version_col = st.columns([2.4, 1], vertical_alignment="center")
             with button_col:
                 st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
             with version_col:
@@ -176,17 +208,16 @@ with fuel_card:
 
 with plant_card:
     with st.container(border=True):
-        inner_icon, inner_text = st.columns([1.25, 2.7], vertical_alignment="center")
-        with inner_icon:
-            st.image(BASE / "excavator_icon.png", width=180)
-        with inner_text:
+        image_col, text_col = st.columns([1.35, 1.85], vertical_alignment="center")
+        with image_col:
+            st.image(BASE / "plant_image.png", width=260)
+        with text_col:
             st.markdown("## Plant Invoice Matcher")
             st.markdown(
                 '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
                 unsafe_allow_html=True,
             )
-            st.write("")
-            button_col, version_col = st.columns([2.2, 1], vertical_alignment="center")
+            button_col, version_col = st.columns([2.4, 1], vertical_alignment="center")
             with button_col:
                 st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
             with version_col:
