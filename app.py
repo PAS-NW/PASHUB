@@ -1,7 +1,9 @@
 from datetime import datetime
 from pathlib import Path
 import base64
+
 import streamlit as st
+import streamlit.components.v1 as components
 from PIL import Image
 
 FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
@@ -34,23 +36,45 @@ hire_b64 = img_b64(HIRE_IMAGE)
 
 updated = datetime.now().strftime("%d %b %Y %H:%M")
 
-st.markdown(f"""
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background: #f4f6f8;
+    }
+
+    .block-container {
+        max-width: 1500px;
+        padding: 0 !important;
+    }
+
+    header, footer, #MainMenu {
+        visibility: hidden;
+    }
+
+    iframe {
+        width: 100%;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+html = f"""
+<!DOCTYPE html>
+<html>
+<head>
 <style>
-.stApp {{
+* {{
+    box-sizing: border-box;
+}}
+
+body {{
+    margin: 0;
+    padding: 42px 48px 24px 48px;
+    font-family: Arial, Helvetica, sans-serif;
     background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 45%, #f1f3f6 100%);
-}}
-
-.block-container {{
-    max-width: 1500px;
-    padding: 2.5rem 3rem 2rem 3rem;
-}}
-
-header, footer, #MainMenu {{
-    visibility: hidden;
-}}
-
-.pas-wrap {{
-    width: 100%;
+    color: #07111f;
 }}
 
 .pas-header {{
@@ -58,7 +82,7 @@ header, footer, #MainMenu {{
     grid-template-columns: 1fr 310px;
     gap: 48px;
     align-items: center;
-    margin-bottom: 56px;
+    margin-bottom: 48px;
 }}
 
 .pas-title-area {{
@@ -200,8 +224,6 @@ header, footer, #MainMenu {{
 
 .launch-btn:hover {{
     background: #ffdf2e;
-    color: #000000 !important;
-    text-decoration: none !important;
     transform: translateY(-1px);
 }}
 
@@ -227,6 +249,10 @@ header, footer, #MainMenu {{
 }}
 
 @media (max-width: 1100px) {{
+    body {{
+        padding: 28px 24px;
+    }}
+
     .pas-header {{
         grid-template-columns: 1fr;
         margin-bottom: 36px;
@@ -234,10 +260,6 @@ header, footer, #MainMenu {{
 
     .app-grid {{
         grid-template-columns: 1fr;
-    }}
-
-    .pas-title-area {{
-        align-items: flex-start;
     }}
 
     .pas-title {{
@@ -250,8 +272,9 @@ header, footer, #MainMenu {{
     }}
 }}
 </style>
+</head>
 
-<div class="pas-wrap">
+<body>
     <div class="pas-header">
         <div class="pas-title-area">
             <img class="pas-logo" src="data:image/png;base64,{logo_b64}">
@@ -302,5 +325,8 @@ header, footer, #MainMenu {{
     </div>
 
     <div class="pas-footer">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>
-</div>
-""", unsafe_allow_html=True)
+</body>
+</html>
+"""
+
+components.html(html, height=820, scrolling=False)
