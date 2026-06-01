@@ -9,6 +9,7 @@ from PIL import Image
 FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
 PLANT_APP_URL = "https://pas-plant-matching.streamlit.app/"
 HIRE_REPORT_APP_URL = "https://hirereportbuilder.streamlit.app/"
+VENDOR_HIRE_APP_URL = "https://vendorhirechecker.streamlit.app/"
 
 BASE = Path(__file__).parent
 
@@ -16,6 +17,7 @@ PAS_LOGO = BASE / "PAS_Logo.png"
 FUEL_IMAGE = BASE / "fuel_image.jpeg"
 PLANT_IMAGE = BASE / "plant_image.png"
 HIRE_IMAGE = BASE / "hire_report_image.png"
+VENDOR_IMAGE = BASE / "vendor_hire_image.webp"
 
 logo = Image.open(PAS_LOGO)
 
@@ -33,6 +35,7 @@ logo_b64 = img_b64(PAS_LOGO)
 fuel_b64 = img_b64(FUEL_IMAGE)
 plant_b64 = img_b64(PLANT_IMAGE)
 hire_b64 = img_b64(HIRE_IMAGE)
+vendor_b64 = img_b64(VENDOR_IMAGE)
 
 updated = datetime.now().strftime("%d %b %Y %H:%M")
 
@@ -151,8 +154,8 @@ body {{
 
 .app-grid {{
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 34px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
     align-items: stretch;
 }}
 
@@ -163,14 +166,14 @@ body {{
     border-radius: 18px;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
     padding: 26px;
-    min-height: 560px;
+    min-height: 540px;
     display: flex;
     flex-direction: column;
 }}
 
 .card-img {{
     width: 100%;
-    height: 245px;
+    height: 220px;
     border-radius: 16px;
     overflow: hidden;
     background: #e5e7eb;
@@ -179,14 +182,14 @@ body {{
 
 .card-img img {{
     width: 100%;
-    height: 245px;
+    height: 220px;
     object-fit: cover;
     display: block;
 }}
 
 .card-title {{
     color: #07111f;
-    font-size: 25px;
+    font-size: 22px;
     line-height: 1.15;
     font-weight: 900;
     margin: 0 0 24px 0;
@@ -202,7 +205,7 @@ body {{
 
 .card-actions {{
     display: grid;
-    grid-template-columns: 1fr 84px;
+    grid-template-columns: 1fr 78px;
     gap: 14px;
     align-items: center;
     margin-top: auto;
@@ -319,6 +322,16 @@ body {{
             <div class="card-text">Build live hire reports quickly from plant and hire data.</div>
             <div class="card-actions">
                 <a class="launch-btn" href="{HIRE_REPORT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <div class="version-pill">v1.0.0</div>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <div class="card-img"><img src="data:image/webp;base64,{vendor_b64}"></div>
+            <div class="card-title">Vendor Hire Checker</div>
+            <div class="card-text">Check vendor hire reports against PAS records and highlight differences.</div>
+            <div class="card-actions">
+                <a class="launch-btn" href="{VENDOR_HIRE_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
             </div>
         </div>
