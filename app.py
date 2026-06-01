@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-
+import base64
 import streamlit as st
 from PIL import Image
 
@@ -10,7 +10,12 @@ HIRE_REPORT_APP_URL = "https://hirereportbuilder.streamlit.app/"
 
 BASE = Path(__file__).parent
 
-logo = Image.open(BASE / "PAS_Logo.png")
+PAS_LOGO = BASE / "PAS_Logo.png"
+FUEL_IMAGE = BASE / "fuel_image.jpeg"
+PLANT_IMAGE = BASE / "plant_image.png"
+HIRE_IMAGE = BASE / "hire_report_image.png"
+
+logo = Image.open(PAS_LOGO)
 
 st.set_page_config(
     page_title="PAS Operations Hub",
@@ -19,271 +24,283 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 45%, #f1f3f6 100%);
-        color: #07111f;
-    }
+def img_b64(path: Path) -> str:
+    return base64.b64encode(path.read_bytes()).decode("utf-8")
 
-    .block-container {
-        max-width: 1550px;
-        padding-top: 3rem;
-        padding-left: 3rem;
-        padding-right: 3rem;
-        padding-bottom: 2rem;
-    }
+logo_b64 = img_b64(PAS_LOGO)
+fuel_b64 = img_b64(FUEL_IMAGE)
+plant_b64 = img_b64(PLANT_IMAGE)
+hire_b64 = img_b64(HIRE_IMAGE)
 
-    header, footer, #MainMenu {
-        visibility: hidden;
-    }
+updated = datetime.now().strftime("%d %b %Y %H:%M")
 
-    h1, h2, h3, p, div, span {
-        color: #07111f;
-    }
+st.markdown(f"""
+<style>
+.stApp {{
+    background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 45%, #f1f3f6 100%);
+}}
 
-    h1 {
-        font-size: 56px !important;
-        font-weight: 900 !important;
-        letter-spacing: -2px;
-        margin-bottom: 0.6rem !important;
-    }
+.block-container {{
+    max-width: 1500px;
+    padding: 2.5rem 3rem 2rem 3rem;
+}}
 
-    h2 {
-        font-size: 25px !important;
-        font-weight: 900 !important;
-        margin-bottom: 1.2rem !important;
-    }
+header, footer, #MainMenu {{
+    visibility: hidden;
+}}
 
-    .yellow-rule {
-        width: 90px;
-        height: 5px;
-        border-radius: 99px;
-        background: #ffd400;
-        margin-top: 18px;
-    }
+.pas-wrap {{
+    width: 100%;
+}}
 
-    .status-text {
-        color: #087a22 !important;
-        font-size: 17px;
-        font-weight: 500;
-    }
+.pas-header {{
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    gap: 48px;
+    align-items: center;
+    margin-bottom: 56px;
+}}
 
-    .muted {
-        color: #374151 !important;
-        font-size: 21px;
-    }
+.pas-title-area {{
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}}
 
-    .card-text {
-        color: #1f2937 !important;
-        font-size: 17px;
-        line-height: 1.55;
-        min-height: 110px;
-        margin-bottom: 26px;
-    }
+.pas-logo {{
+    width: 150px;
+    height: 150px;
+    border-radius: 14px;
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.13);
+    flex-shrink: 0;
+}}
 
-    div[data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255,255,255,0.96);
-        border: 1px solid #d9dee8;
-        border-left: 6px solid #ffd400;
-        border-radius: 18px;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
-    }
+.pas-title {{
+    margin: 0;
+    color: #07111f;
+    font-size: 48px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -1.8px;
+}}
 
-    .status-box div[data-testid="stVerticalBlockBorderWrapper"] {
-        border-left: 1px solid #d9dee8;
-    }
+.pas-subtitle {{
+    margin-top: 18px;
+    color: #374151;
+    font-size: 19px;
+    line-height: 1.4;
+}}
 
-    /* Button styling */
-    .stLinkButton {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-    }
+.yellow-line {{
+    width: 82px;
+    height: 5px;
+    background: #ffd400;
+    border-radius: 99px;
+    margin-top: 18px;
+}}
 
-    .stLinkButton a {
-        background: #ffd400 !important;
-        color: #000000 !important;
-        border: 0 !important;
-        border-radius: 12px !important;
-        min-height: 64px;
-        height: 64px;
-        font-size: 20px !important;
-        font-weight: 900 !important;
-        box-shadow: 0 13px 28px rgba(255, 212, 0, 0.25);
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
+.status-card {{
+    background: rgba(255,255,255,0.96);
+    border: 1px solid #d9dee8;
+    border-radius: 16px;
+    padding: 26px 30px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+}}
 
-    .stLinkButton a:hover {
-        background: #ffdf2e !important;
-        color: #000000 !important;
-        border: 0 !important;
-        transform: translateY(-1px);
-    }
+.status-title {{
+    color: #07111f;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 18px;
+}}
 
-    /* Force the version box to sit exactly level with the launch button */
-    .version-wrap {
-        height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 0 !important;
-        padding-top: 0 !important;
-    }
+.status-ok {{
+    color: #087a22;
+    font-size: 16px;
+    margin-bottom: 14px;
+}}
 
-    .version-pill {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid #d7dde6;
-        border-radius: 10px;
-        background: white;
-        color: #1f2937 !important;
-        height: 64px;
-        width: 100%;
-        font-size: 16px;
-        text-align: center;
-        box-sizing: border-box;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+.status-date {{
+    color: #6b7280;
+    font-size: 13px;
+}}
 
-    .version-wrap p {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+.app-grid {{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 34px;
+    align-items: stretch;
+}}
 
-    .footer-line {
-        margin-top: 52px;
-        border-top: 1px solid #d9dee8;
-        padding-top: 30px;
-        text-align: center;
-        color: #1f2937 !important;
-        font-size: 17px;
-    }
+.app-card {{
+    background: rgba(255,255,255,0.96);
+    border: 1px solid #d9dee8;
+    border-left: 6px solid #ffd400;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+    padding: 26px;
+    min-height: 560px;
+    display: flex;
+    flex-direction: column;
+}}
 
-    [data-testid="stImage"] img {
-        border-radius: 18px;
-        object-fit: cover;
-    }
+.card-img {{
+    width: 100%;
+    height: 245px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #e5e7eb;
+    margin-bottom: 26px;
+}}
 
-    /* Fixed app-card image sizing */
-    .app-card-image {
-        width: 100%;
-        height: 260px;
-        overflow: hidden;
-        border-radius: 18px;
-        margin-bottom: 24px;
-    }
+.card-img img {{
+    width: 100%;
+    height: 245px;
+    object-fit: cover;
+    display: block;
+}}
 
-    .app-card-image img {
-        width: 100% !important;
-        height: 260px !important;
-        object-fit: cover !important;
-        border-radius: 18px !important;
-        display: block;
-    }
+.card-title {{
+    color: #07111f;
+    font-size: 25px;
+    line-height: 1.15;
+    font-weight: 900;
+    margin: 0 0 24px 0;
+}}
 
-    /* Helps Streamlit image wrappers obey the fixed image area */
-    .app-card-image [data-testid="stImage"] {
-        height: 260px !important;
-        overflow: hidden !important;
-    }
+.card-text {{
+    color: #1f2937;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 76px;
+    margin-bottom: 34px;
+}}
 
-    @media (max-width: 1050px) {
-        .block-container {
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-        }
+.card-actions {{
+    display: grid;
+    grid-template-columns: 1fr 84px;
+    gap: 14px;
+    align-items: center;
+    margin-top: auto;
+}}
 
-        h1 {
-            font-size: 40px !important;
-        }
+.launch-btn {{
+    height: 58px;
+    border-radius: 11px;
+    background: #ffd400;
+    color: #000000 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none !important;
+    font-size: 16px;
+    font-weight: 900;
+    box-shadow: 0 13px 28px rgba(255, 212, 0, 0.25);
+}}
 
-        .muted {
-            font-size: 18px;
-        }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+.launch-btn:hover {{
+    background: #ffdf2e;
+    color: #000000 !important;
+    text-decoration: none !important;
+    transform: translateY(-1px);
+}}
 
-# Header
-hero_left, hero_right = st.columns([4, 1.45], vertical_alignment="center")
+.version-pill {{
+    height: 58px;
+    border: 1px solid #d7dde6;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}}
 
-with hero_left:
-    logo_col, text_col = st.columns([1, 4], vertical_alignment="center")
-    with logo_col:
-        st.image(BASE / "PAS_Logo.png", width=190)
-    with text_col:
-        st.title("PAS Operations Hub")
-        st.markdown('<div class="muted">Central tools and insights for PAS operations.</div>', unsafe_allow_html=True)
-        st.markdown('<div class="yellow-rule"></div>', unsafe_allow_html=True)
+.pas-footer {{
+    margin-top: 54px;
+    border-top: 1px solid #d9dee8;
+    padding-top: 28px;
+    text-align: center;
+    color: #1f2937;
+    font-size: 16px;
+}}
 
-with hero_right:
-    st.markdown('<div class="status-box">', unsafe_allow_html=True)
-    with st.container(border=True):
-        st.markdown("### System Status")
-        st.markdown('<div class="status-text">●&nbsp;&nbsp;All Systems Operational</div>', unsafe_allow_html=True)
-        st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y %H:%M')}")
-    st.markdown('</div>', unsafe_allow_html=True)
+@media (max-width: 1100px) {{
+    .pas-header {{
+        grid-template-columns: 1fr;
+        margin-bottom: 36px;
+    }}
 
-st.write("")
-st.write("")
+    .app-grid {{
+        grid-template-columns: 1fr;
+    }}
 
-# App cards
-fuel_card, plant_card, hire_card = st.columns(3, gap="large", vertical_alignment="top")
+    .pas-title-area {{
+        align-items: flex-start;
+    }}
 
-with fuel_card:
-    with st.container(border=True):
-        st.markdown('<div class="app-card-image">', unsafe_allow_html=True)
-        st.image(BASE / "fuel_image.jpeg", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown("## Fuel Invoice Checker")
-        st.markdown(
-            '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
-            unsafe_allow_html=True,
-        )
-        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
-        with button_col:
-            st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
-        with version_col:
-            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+    .pas-title {{
+        font-size: 38px;
+    }}
 
-with plant_card:
-    with st.container(border=True):
-        st.markdown('<div class="app-card-image">', unsafe_allow_html=True)
-        st.image(BASE / "plant_image.png", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown("## Plant Invoice Matcher")
-        st.markdown(
-            '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
-            unsafe_allow_html=True,
-        )
-        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
-        with button_col:
-            st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
-        with version_col:
-            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+    .pas-logo {{
+        width: 120px;
+        height: 120px;
+    }}
+}}
+</style>
 
+<div class="pas-wrap">
+    <div class="pas-header">
+        <div class="pas-title-area">
+            <img class="pas-logo" src="data:image/png;base64,{logo_b64}">
+            <div>
+                <h1 class="pas-title">PAS Operations Hub</h1>
+                <div class="pas-subtitle">Central tools and insights for PAS operations.</div>
+                <div class="yellow-line"></div>
+            </div>
+        </div>
 
-with hire_card:
-    with st.container(border=True):
-        st.markdown('<div class="app-card-image">', unsafe_allow_html=True)
-        st.image(BASE / "hire_report_image.png", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        st.markdown("## Hire Report Builder")
-        st.markdown(
-            '<div class="card-text">Build live hire reports quickly from plant and hire data.</div>',
-            unsafe_allow_html=True,
-        )
-        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
-        with button_col:
-            st.link_button("Launch App  →", HIRE_REPORT_APP_URL, use_container_width=True)
-        with version_col:
-            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+        <div class="status-card">
+            <div class="status-title">System Status</div>
+            <div class="status-ok">●&nbsp;&nbsp;All Systems Operational</div>
+            <div class="status-date">Last updated: {updated}</div>
+        </div>
+    </div>
 
-st.markdown('<div class="footer-line">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>', unsafe_allow_html=True)
+    <div class="app-grid">
+        <div class="app-card">
+            <div class="card-img"><img src="data:image/jpeg;base64,{fuel_b64}"></div>
+            <div class="card-title">Fuel Invoice Checker</div>
+            <div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>
+            <div class="card-actions">
+                <a class="launch-btn" href="{FUEL_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <div class="version-pill">v1.0.0</div>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <div class="card-img"><img src="data:image/png;base64,{plant_b64}"></div>
+            <div class="card-title">Plant Invoice Matcher</div>
+            <div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>
+            <div class="card-actions">
+                <a class="launch-btn" href="{PLANT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <div class="version-pill">v1.0.0</div>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <div class="card-img"><img src="data:image/png;base64,{hire_b64}"></div>
+            <div class="card-title">Hire Report Builder</div>
+            <div class="card-text">Build live hire reports quickly from plant and hire data.</div>
+            <div class="card-actions">
+                <a class="launch-btn" href="{HIRE_REPORT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <div class="version-pill">v1.0.0</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pas-footer">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>
+</div>
+""", unsafe_allow_html=True)
