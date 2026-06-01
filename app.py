@@ -6,6 +6,7 @@ from PIL import Image
 
 FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
 PLANT_APP_URL = "https://pas-plant-matching.streamlit.app/"
+HIRE_REPORT_APP_URL = "https://hirereportbuilder.streamlit.app/"
 
 BASE = Path(__file__).parent
 
@@ -27,7 +28,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1480px;
+        max-width: 1550px;
         padding-top: 3rem;
         padding-left: 3rem;
         padding-right: 3rem;
@@ -50,7 +51,7 @@ st.markdown(
     }
 
     h2 {
-        font-size: 29px !important;
+        font-size: 25px !important;
         font-weight: 900 !important;
         margin-bottom: 1.2rem !important;
     }
@@ -76,7 +77,7 @@ st.markdown(
 
     .card-text {
         color: #1f2937 !important;
-        font-size: 18px;
+        font-size: 17px;
         line-height: 1.55;
         min-height: 110px;
         margin-bottom: 26px;
@@ -211,40 +212,49 @@ st.write("")
 st.write("")
 
 # App cards
-fuel_card, plant_card = st.columns(2, gap="large", vertical_alignment="top")
+fuel_card, plant_card, hire_card = st.columns(3, gap="large", vertical_alignment="top")
 
 with fuel_card:
     with st.container(border=True):
-        image_col, text_col = st.columns([1.35, 1.85], vertical_alignment="center")
-        with image_col:
-            st.image(BASE / "fuel_image.jpeg", width=260)
-        with text_col:
-            st.markdown("## Fuel Invoice Checker")
-            st.markdown(
-                '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
-                unsafe_allow_html=True,
-            )
-            button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
-            with button_col:
-                st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
-            with version_col:
-                st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+        st.image(BASE / "fuel_image.jpeg", use_container_width=True)
+        st.markdown("## Fuel Invoice Checker")
+        st.markdown(
+            '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
+            unsafe_allow_html=True,
+        )
+        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
+        with button_col:
+            st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
+        with version_col:
+            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
 
 with plant_card:
     with st.container(border=True):
-        image_col, text_col = st.columns([1.35, 1.85], vertical_alignment="center")
-        with image_col:
-            st.image(BASE / "plant_image.png", width=260)
-        with text_col:
-            st.markdown("## Plant Invoice Matcher")
-            st.markdown(
-                '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
-                unsafe_allow_html=True,
-            )
-            button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
-            with button_col:
-                st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
-            with version_col:
-                st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+        st.image(BASE / "plant_image.png", use_container_width=True)
+        st.markdown("## Plant Invoice Matcher")
+        st.markdown(
+            '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
+            unsafe_allow_html=True,
+        )
+        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
+        with button_col:
+            st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
+        with version_col:
+            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
+
+
+with hire_card:
+    with st.container(border=True):
+        st.image(BASE / "hire_report_image.png", use_container_width=True)
+        st.markdown("## Hire Report Builder")
+        st.markdown(
+            '<div class="card-text">Build live hire reports quickly from plant and hire data.</div>',
+            unsafe_allow_html=True,
+        )
+        button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
+        with button_col:
+            st.link_button("Launch App  →", HIRE_REPORT_APP_URL, use_container_width=True)
+        with version_col:
+            st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="footer-line">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>', unsafe_allow_html=True)
