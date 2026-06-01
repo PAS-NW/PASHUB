@@ -78,8 +78,8 @@ st.markdown(
         color: #1f2937 !important;
         font-size: 18px;
         line-height: 1.55;
-        min-height: 88px;
-        margin-bottom: 38px;
+        min-height: 110px;
+        margin-bottom: 26px;
     }
 
     div[data-testid="stVerticalBlockBorderWrapper"] {
@@ -94,15 +94,25 @@ st.markdown(
         border-left: 1px solid #d9dee8;
     }
 
+    /* Button styling */
+    .stLinkButton {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
     .stLinkButton a {
         background: #ffd400 !important;
         color: #000000 !important;
         border: 0 !important;
         border-radius: 12px !important;
         min-height: 64px;
+        height: 64px;
         font-size: 20px !important;
         font-weight: 900 !important;
         box-shadow: 0 13px 28px rgba(255, 212, 0, 0.25);
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
     .stLinkButton a:hover {
@@ -110,6 +120,16 @@ st.markdown(
         color: #000000 !important;
         border: 0 !important;
         transform: translateY(-1px);
+    }
+
+    /* Force the version box to sit exactly level with the launch button */
+    .version-wrap {
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
 
     .version-pill {
@@ -121,9 +141,17 @@ st.markdown(
         background: white;
         color: #1f2937 !important;
         height: 64px;
+        width: 100%;
         font-size: 16px;
         text-align: center;
         box-sizing: border-box;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .version-wrap p {
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .footer-line {
@@ -138,10 +166,6 @@ st.markdown(
     [data-testid="stImage"] img {
         border-radius: 18px;
         object-fit: cover;
-    }
-
-    .photo-spacer {
-        height: 8px;
     }
 
     @media (max-width: 1050px) {
@@ -200,11 +224,11 @@ with fuel_card:
                 '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
                 unsafe_allow_html=True,
             )
-            button_col, version_col = st.columns([2.4, 1], vertical_alignment="center")
+            button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
             with button_col:
                 st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
             with version_col:
-                st.markdown('<div class="version-pill">v1.0.0</div>', unsafe_allow_html=True)
+                st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
 
 with plant_card:
     with st.container(border=True):
@@ -217,10 +241,10 @@ with plant_card:
                 '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
                 unsafe_allow_html=True,
             )
-            button_col, version_col = st.columns([2.4, 1], vertical_alignment="center")
+            button_col, version_col = st.columns([2.4, 1], vertical_alignment="top")
             with button_col:
                 st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
             with version_col:
-                st.markdown('<div class="version-pill">v1.0.0</div>', unsafe_allow_html=True)
+                st.markdown('<div class="version-wrap"><div class="version-pill">v1.0.0</div></div>', unsafe_allow_html=True)
 
 st.markdown('<div class="footer-line">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>', unsafe_allow_html=True)
