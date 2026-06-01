@@ -1,4 +1,3 @@
-import base64
 from datetime import datetime
 from pathlib import Path
 
@@ -8,297 +7,189 @@ from PIL import Image
 FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
 PLANT_APP_URL = "https://pas-plant-matching.streamlit.app/"
 
-logo_path = Path(__file__).parent / "PAS_Logo.png"
-logo_img = Image.open(logo_path)
-logo_b64 = base64.b64encode(logo_path.read_bytes()).decode()
+BASE = Path(__file__).parent
+logo = Image.open(BASE / "PAS_Logo.png")
 
 st.set_page_config(
     page_title="PAS Operations Hub",
-    page_icon=logo_img,
+    page_icon=logo,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
     .stApp {
-        background: radial-gradient(circle at top left, #ffffff 0%, #f6f7f9 45%, #f2f4f7 100%);
+        background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 48%, #f1f3f6 100%);
         color: #07111f;
     }
 
     .block-container {
         max-width: 1480px;
-        padding-top: 3.2rem;
-        padding-bottom: 2rem;
+        padding-top: 3rem;
         padding-left: 3rem;
         padding-right: 3rem;
+        padding-bottom: 2rem;
     }
 
     header, footer, #MainMenu {
         visibility: hidden;
     }
 
-    .pas-hero {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 40px;
-        margin-bottom: 66px;
+    h1, h2, h3, p, div, span {
+        color: #07111f;
     }
 
-    .pas-hero-left {
-        display: flex;
-        align-items: center;
-        gap: 50px;
+    h1 {
+        font-size: 56px !important;
+        font-weight: 900 !important;
+        letter-spacing: -2px;
+        margin-bottom: 0.6rem !important;
     }
 
-    .pas-logo {
-        width: 190px;
-        height: 190px;
-        border-radius: 18px;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.13);
+    h2 {
+        font-size: 29px !important;
+        font-weight: 900 !important;
     }
 
-    .pas-title {
-        color: #07111f !important;
-        font-size: 64px;
-        line-height: 1.02;
-        font-weight: 900;
-        letter-spacing: -2.5px;
-        margin: 0;
-    }
-
-    .pas-subtitle {
-        color: #1f2937 !important;
-        font-size: 25px;
-        line-height: 1.4;
-        margin-top: 24px;
-        margin-bottom: 28px;
-    }
-
-    .pas-line {
+    .yellow-rule {
         width: 90px;
         height: 5px;
-        border-radius: 999px;
+        border-radius: 99px;
         background: #ffd400;
+        margin-top: 18px;
     }
 
-    .status-card {
-        width: 315px;
-        background: rgba(255, 255, 255, 0.94);
-        border: 1px solid #d9dee8;
-        border-radius: 18px;
-        padding: 34px 38px;
-        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+    .status-text {
+        color: #087a22 !important;
+        font-size: 17px;
+        font-weight: 500;
     }
 
-    .status-title {
-        color: #07111f;
-        font-size: 20px;
-        font-weight: 900;
-        margin-bottom: 25px;
-    }
-
-    .status-ok {
-        color: #087a22;
-        font-size: 18px;
-        margin-bottom: 24px;
-    }
-
-    .status-date {
-        color: #1f2937;
-        font-size: 16px;
-    }
-
-    .app-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 36px;
-    }
-
-    .app-card {
-        min-height: 360px;
-        display: grid;
-        grid-template-columns: 190px 1fr;
-        gap: 46px;
-        align-items: center;
-        padding: 55px 48px;
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid #d9dee8;
-        border-left: 7px solid #ffd400;
-        border-radius: 19px;
-        box-shadow: 0 20px 46px rgba(15, 23, 42, 0.08);
-    }
-
-    .fuel-card {
-        background: linear-gradient(135deg, #fffaf0 0%, #ffffff 78%);
-    }
-
-    .plant-card {
-        background: linear-gradient(135deg, #f8fbff 0%, #ffffff 78%);
-    }
-
-    .icon-box {
-        width: 180px;
-        height: 180px;
-        border-radius: 19px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff0ad;
-        font-size: 98px;
-        box-shadow: inset 0 0 0 1px rgba(255, 212, 0, 0.18);
-    }
-
-    .card-title {
-        color: #07111f;
-        font-size: 34px;
-        line-height: 1.15;
-        font-weight: 900;
-        margin-bottom: 28px;
-        letter-spacing: -0.8px;
+    .muted {
+        color: #374151 !important;
+        font-size: 21px;
     }
 
     .card-text {
-        color: #1f2937;
-        font-size: 23px;
-        line-height: 1.48;
-        max-width: 540px;
-        margin-bottom: 55px;
+        color: #1f2937 !important;
+        font-size: 18px;
+        line-height: 1.5;
     }
 
-    .button-row {
-        display: flex;
-        align-items: center;
-        gap: 40px;
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: rgba(255,255,255,0.94);
+        border: 1px solid #d9dee8;
+        border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
     }
 
-    .launch-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 255px;
-        height: 82px;
-        border-radius: 14px;
-        background: #ffd400;
+    .stLinkButton a {
+        background: #ffd400 !important;
         color: #000000 !important;
-        font-size: 25px;
-        font-weight: 900;
-        text-decoration: none !important;
-        box-shadow: 0 13px 28px rgba(255, 212, 0, 0.28);
-        transition: 0.15s ease;
+        border: 0 !important;
+        border-radius: 12px !important;
+        min-height: 64px;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        box-shadow: 0 13px 28px rgba(255, 212, 0, 0.25);
     }
 
-    .launch-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 17px 34px rgba(255, 212, 0, 0.38);
+    .stLinkButton a:hover {
+        background: #ffdf2e !important;
+        color: #000000 !important;
+        border: 0 !important;
+        transform: translateY(-1px);
     }
 
-    .version {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        height: 56px;
-        min-width: 86px;
-        padding: 0 18px;
+    .version-pill {
+        display: inline-block;
         border: 1px solid #d7dde6;
-        border-radius: 12px;
+        border-radius: 10px;
         background: white;
-        color: #1f2937;
-        font-size: 20px;
-    }
-
-    .pas-footer {
-        margin-top: 58px;
-        border-top: 1px solid #d9dee8;
-        padding-top: 34px;
+        color: #1f2937 !important;
+        padding: 12px 18px;
+        font-size: 16px;
+        margin-top: 11px;
         text-align: center;
-        color: #1f2937;
-        font-size: 19px;
     }
 
-    @media (max-width: 1050px) {
-        .pas-hero, .pas-hero-left {
-            display: block;
-        }
-
-        .pas-title {
-            font-size: 42px;
-            margin-top: 28px;
-        }
-
-        .pas-subtitle {
-            font-size: 20px;
-        }
-
-        .status-card {
-            width: auto;
-            margin-top: 30px;
-        }
-
-        .app-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .app-card {
-            grid-template-columns: 1fr;
-            padding: 36px;
-        }
-
-        .button-row {
-            flex-wrap: wrap;
-        }
+    .footer-line {
+        margin-top: 52px;
+        border-top: 1px solid #d9dee8;
+        padding-top: 30px;
+        text-align: center;
+        color: #1f2937 !important;
+        font-size: 17px;
     }
-</style>
-""", unsafe_allow_html=True)
 
-current_time = datetime.now().strftime("%d %b %Y %H:%M")
+    [data-testid="stImage"] img {
+        border-radius: 18px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-st.markdown(f"""
-<div class="pas-hero">
-    <div class="pas-hero-left">
-        <img class="pas-logo" src="data:image/png;base64,{logo_b64}">
-        <div>
-            <h1 class="pas-title">PAS Operations Hub</h1>
-            <div class="pas-subtitle">Central tools and insights for PAS operations.</div>
-            <div class="pas-line"></div>
-        </div>
-    </div>
+# Header
+hero_left, hero_right = st.columns([4, 1.45], vertical_alignment="center")
 
-    <div class="status-card">
-        <div class="status-title">System Status</div>
-        <div class="status-ok">●&nbsp;&nbsp;All Systems Operational</div>
-        <div class="status-date">Last updated: {current_time}</div>
-    </div>
-</div>
+with hero_left:
+    logo_col, text_col = st.columns([1, 4], vertical_alignment="center")
+    with logo_col:
+        st.image(BASE / "PAS_Logo.png", width=190)
+    with text_col:
+        st.title("PAS Operations Hub")
+        st.markdown('<div class="muted">Central tools and insights for PAS operations.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="yellow-rule"></div>', unsafe_allow_html=True)
 
-<div class="app-grid">
-    <div class="app-card fuel-card">
-        <div class="icon-box">⛽</div>
-        <div>
-            <div class="card-title">Fuel Invoice Checker</div>
-            <div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>
-            <div class="button-row">
-                <a class="launch-btn" href="{FUEL_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
-                <span class="version">v1.0.0</span>
-            </div>
-        </div>
-    </div>
+with hero_right:
+    with st.container(border=True):
+        st.markdown("### System Status")
+        st.markdown('<div class="status-text">●&nbsp;&nbsp;All Systems Operational</div>', unsafe_allow_html=True)
+        st.caption(f"Last updated: {datetime.now().strftime('%d %b %Y %H:%M')}")
 
-    <div class="app-card plant-card">
-        <div class="icon-box">🚧</div>
-        <div>
-            <div class="card-title">Plant Invoice Matcher</div>
-            <div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>
-            <div class="button-row">
-                <a class="launch-btn" href="{PLANT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
-                <span class="version">v1.0.0</span>
-            </div>
-        </div>
-    </div>
-</div>
+st.write("")
+st.write("")
 
-<div class="pas-footer">
-    © 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0
-</div>
-""", unsafe_allow_html=True)
+# App cards
+fuel_card, plant_card = st.columns(2, gap="large", vertical_alignment="top")
+
+with fuel_card:
+    with st.container(border=True):
+        inner_icon, inner_text = st.columns([1.25, 2.7], vertical_alignment="center")
+        with inner_icon:
+            st.image(BASE / "fuel_icon.png", width=180)
+        with inner_text:
+            st.markdown("## Fuel Invoice Checker")
+            st.markdown(
+                '<div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>',
+                unsafe_allow_html=True,
+            )
+            st.write("")
+            button_col, version_col = st.columns([2.2, 1], vertical_alignment="center")
+            with button_col:
+                st.link_button("Launch App  →", FUEL_APP_URL, use_container_width=True)
+            with version_col:
+                st.markdown('<div class="version-pill">v1.0.0</div>', unsafe_allow_html=True)
+
+with plant_card:
+    with st.container(border=True):
+        inner_icon, inner_text = st.columns([1.25, 2.7], vertical_alignment="center")
+        with inner_icon:
+            st.image(BASE / "excavator_icon.png", width=180)
+        with inner_text:
+            st.markdown("## Plant Invoice Matcher")
+            st.markdown(
+                '<div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>',
+                unsafe_allow_html=True,
+            )
+            st.write("")
+            button_col, version_col = st.columns([2.2, 1], vertical_alignment="center")
+            with button_col:
+                st.link_button("Launch App  →", PLANT_APP_URL, use_container_width=True)
+            with version_col:
+                st.markdown('<div class="version-pill">v1.0.0</div>', unsafe_allow_html=True)
+
+st.markdown('<div class="footer-line">© 2026 PAS Operations Hub &nbsp;&nbsp; | &nbsp;&nbsp; v1.0.0</div>', unsafe_allow_html=True)
