@@ -329,7 +329,7 @@ body {{
         <div class="app-card">
             <div class="card-img"><img src="data:image/webp;base64,{vendor_b64}"></div>
             <div class="card-title">Vendor Hire Checker</div>
-            <div class="card-text">Check vendor hire reports against PAS records and highlight differences.</div>
+            <div class="card-text">Check vendor hire reports agree with PAS records and highlight differences.</div>
             <div class="card-actions">
                 <a class="launch-btn" href="{VENDOR_HIRE_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
