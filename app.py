@@ -301,7 +301,7 @@ body {{
     <div class="app-grid">
         <div class="app-card">
             <div class="card-img"><img src="data:image/png;base64,{pdf_converter_b64}"></div>
-            <div class="card-title">PAS Hire PDF Converter</div>
+            <div class="card-title">Supplier Hire PDF Converter</div>
             <div class="card-text">Convert supplier hire PDFs into clean Excel-ready hire report data.</div>
             <div class="card-actions">
                 <a class="launch-btn" href="{PDF_CONVERTER_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
@@ -311,8 +311,8 @@ body {{
 
         <div class="app-card">
             <div class="card-img"><img src="data:image/webp;base64,{vendor_b64}"></div>
-            <div class="card-title">Vendor Hire Checker</div>
-            <div class="card-text">Check vendor hire reports against PAS records and highlight differences.</div>
+            <div class="card-title">Supplier Hire Checker</div>
+            <div class="card-text">Check Supplier hire reports against PAS records and highlight differences.</div>
             <div class="card-actions">
                 <a class="launch-btn" href="{VENDOR_HIRE_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
