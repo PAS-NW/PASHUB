@@ -10,6 +10,7 @@ FUEL_APP_URL = "https://fuelinvcheck-ykxmchaxngfmx4tcz7afjp.streamlit.app/"
 PLANT_APP_URL = "https://pas-plant-matching.streamlit.app/"
 HIRE_REPORT_APP_URL = "https://hirereportbuilder.streamlit.app/"
 VENDOR_HIRE_APP_URL = "https://vendorhirechecker.streamlit.app/"
+PDF_CONVERTER_APP_URL = "https://paspdfconverthirereport.streamlit.app/"
 
 BASE = Path(__file__).parent
 
@@ -18,6 +19,7 @@ FUEL_IMAGE = BASE / "fuel_image.jpeg"
 PLANT_IMAGE = BASE / "plant_image.png"
 HIRE_IMAGE = BASE / "hire_report_image.png"
 VENDOR_IMAGE = BASE / "vendor_hire_image.webp"
+PDF_CONVERTER_IMAGE = BASE / "pdf_converter_image.png"
 
 logo = Image.open(PAS_LOGO)
 
@@ -36,6 +38,7 @@ fuel_b64 = img_b64(FUEL_IMAGE)
 plant_b64 = img_b64(PLANT_IMAGE)
 hire_b64 = img_b64(HIRE_IMAGE)
 vendor_b64 = img_b64(VENDOR_IMAGE)
+pdf_converter_b64 = img_b64(PDF_CONVERTER_IMAGE)
 
 updated = datetime.now().strftime("%d %b %Y %H:%M")
 
@@ -47,7 +50,7 @@ st.markdown(
     }
 
     .block-container {
-        max-width: 1500px;
+        max-width: 1680px;
         padding: 0 !important;
     }
 
@@ -74,7 +77,7 @@ html = f"""
 
 body {{
     margin: 0;
-    padding: 42px 48px 24px 48px;
+    padding: 38px 42px 24px 42px;
     font-family: Arial, Helvetica, sans-serif;
     background: radial-gradient(circle at top left, #ffffff 0%, #f7f8fa 45%, #f1f3f6 100%);
     color: #07111f;
@@ -154,8 +157,8 @@ body {{
 
 .app-grid {{
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
     align-items: stretch;
 }}
 
@@ -165,15 +168,15 @@ body {{
     border-left: 6px solid #ffd400;
     border-radius: 18px;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
-    padding: 26px;
-    min-height: 540px;
+    padding: 22px;
+    min-height: 520px;
     display: flex;
     flex-direction: column;
 }}
 
 .card-img {{
     width: 100%;
-    height: 220px;
+    height: 205px;
     border-radius: 16px;
     overflow: hidden;
     background: #e5e7eb;
@@ -182,14 +185,14 @@ body {{
 
 .card-img img {{
     width: 100%;
-    height: 220px;
+    height: 205px;
     object-fit: cover;
     display: block;
 }}
 
 .card-title {{
     color: #07111f;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.15;
     font-weight: 900;
     margin: 0 0 24px 0;
@@ -205,7 +208,7 @@ body {{
 
 .card-actions {{
     display: grid;
-    grid-template-columns: 1fr 78px;
+    grid-template-columns: 1fr 72px;
     gap: 14px;
     align-items: center;
     margin-top: auto;
@@ -297,21 +300,21 @@ body {{
 
     <div class="app-grid">
         <div class="app-card">
-            <div class="card-img"><img src="data:image/jpeg;base64,{fuel_b64}"></div>
-            <div class="card-title">Fuel Invoice Checker</div>
-            <div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>
+            <div class="card-img"><img src="data:image/png;base64,{pdf_converter_b64}"></div>
+            <div class="card-title">PAS Hire PDF Converter</div>
+            <div class="card-text">Convert supplier hire PDFs into clean Excel-ready hire report data.</div>
             <div class="card-actions">
-                <a class="launch-btn" href="{FUEL_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <a class="launch-btn" href="{PDF_CONVERTER_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
             </div>
         </div>
 
         <div class="app-card">
-            <div class="card-img"><img src="data:image/png;base64,{plant_b64}"></div>
-            <div class="card-title">Plant Invoice Matcher</div>
-            <div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>
+            <div class="card-img"><img src="data:image/webp;base64,{vendor_b64}"></div>
+            <div class="card-title">Vendor Hire Checker</div>
+            <div class="card-text">Check vendor hire reports against PAS records and highlight differences.</div>
             <div class="card-actions">
-                <a class="launch-btn" href="{PLANT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <a class="launch-btn" href="{VENDOR_HIRE_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
             </div>
         </div>
@@ -327,11 +330,21 @@ body {{
         </div>
 
         <div class="app-card">
-            <div class="card-img"><img src="data:image/webp;base64,{vendor_b64}"></div>
-            <div class="card-title">Vendor Hire Checker</div>
-            <div class="card-text">Check vendor hire reports agree with PAS records and highlight differences.</div>
+            <div class="card-img"><img src="data:image/png;base64,{plant_b64}"></div>
+            <div class="card-title">Plant Invoice Matcher</div>
+            <div class="card-text">Match plant hire invoices against PAS hire reports and detect discrepancies.</div>
             <div class="card-actions">
-                <a class="launch-btn" href="{VENDOR_HIRE_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <a class="launch-btn" href="{PLANT_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
+                <div class="version-pill">v1.0.0</div>
+            </div>
+        </div>
+
+        <div class="app-card">
+            <div class="card-img"><img src="data:image/jpeg;base64,{fuel_b64}"></div>
+            <div class="card-title">Fuel Invoice Checker</div>
+            <div class="card-text">Check fuel invoices against vehicle records and assign drivers/jobs.</div>
+            <div class="card-actions">
+                <a class="launch-btn" href="{FUEL_APP_URL}" target="_blank" rel="noopener noreferrer">Launch App&nbsp;&nbsp;→</a>
                 <div class="version-pill">v1.0.0</div>
             </div>
         </div>
@@ -342,4 +355,4 @@ body {{
 </html>
 """
 
-components.html(html, height=820, scrolling=False)
+components.html(html, height=840, scrolling=False)
