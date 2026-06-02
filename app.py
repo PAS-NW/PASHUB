@@ -19,7 +19,7 @@ FUEL_IMAGE = BASE / "fuel_image.jpeg"
 PLANT_IMAGE = BASE / "plant_image.png"
 HIRE_IMAGE = BASE / "hire_report_image.png"
 VENDOR_IMAGE = BASE / "vendor_hire_image.webp"
-PDF_CONVERTER_IMAGE = BASE / "pdf_converter_image.png"
+PDF_CONVERTER_IMAGE = BASE / "pdf_converter_image.webp"
 
 logo = Image.open(PAS_LOGO)
 
